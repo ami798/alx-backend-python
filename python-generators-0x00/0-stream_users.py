@@ -1,7 +1,14 @@
-from itertools import islice
-stream_users = __import__('0-stream_users')
+#!/usr/bin/env python3
+import sqlite3
 
-# iterate over the generator function and print only the first 6 rows
+def stream_users():
+    """Generator that yields rows one by one from the user_data table."""
+    conn = sqlite3.connect("users.db")
+    conn.row_factory = sqlite3.Row  # This allows fetching rows as dict-like
+    cur = conn.cursor()
+    cur.execute("SELECT * FROM user_data")
 
-for user in islice(stream_users(), 6):
-    print(user)
+    for row in cur:
+        yield dict(row)
+
+    conn.close()
