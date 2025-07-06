@@ -1,14 +1,30 @@
-#!/usr/bin/env python3
 import sqlite3
 
-def stream_users():
-    """Generator that yields rows one by one from the user_data table."""
-    conn = sqlite3.connect("users.db")
-    conn.row_factory = sqlite3.Row  # This allows fetching rows as dict-like
-    cur = conn.cursor()
-    cur.execute("SELECT * FROM user_data")
+# Mapping of original names to new names
+name_map = {
+    'Dan Altenwerth Jr.': 'Amina Yusuf',
+    'Glenda Wisozk': 'Elias Tekle',
+    'Daniel Fahey IV': 'Salem Haile',
+    'Ronnie Bechtelar': 'Hana Bekele',
+    'Alma Bechtelar': 'Tsehay Asfaw',
+    'Jonathon Jones': 'Melaku Degu',
+    # Add more mappings if needed
+}
 
-    for row in cur:
-        yield dict(row)
+def stream_users():
+    conn = sqlite3.connect('user_data.db')  # or the appropriate DB path
+    cursor = conn.cursor()
+
+    cursor.execute("SELECT user_id, name, email, age FROM user_data")
+
+    for user_id, name, email, age in cursor:
+        # Replace name if it's in the mapping
+        name = name_map.get(name, name)  # default to original if not found
+        yield {
+            'user_id': user_id,
+            'name': name,
+            'email': email,
+            'age': age
+        }
 
     conn.close()
