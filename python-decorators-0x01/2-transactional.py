@@ -20,8 +20,8 @@ def transactional(func):
             return result
         except Exception as e:
             conn.rollback()
-            print(f"Transaction failed: {e}")
-            raise
+            print("Transaction failed. Rolled back.")
+            raise e
     return wrapper
 
 @with_db_connection
@@ -29,3 +29,6 @@ def transactional(func):
 def update_user_email(conn, user_id, new_email):
     cursor = conn.cursor()
     cursor.execute("UPDATE users SET email = ? WHERE id = ?", (new_email, user_id))
+
+# ✅ Test it
+update_user_email(user_id=1, new_email="new_amira@example.com")
