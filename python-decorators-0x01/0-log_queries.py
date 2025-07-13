@@ -1,6 +1,6 @@
 import sqlite3
 import functools
-from datetime import datetime  # ✅ required by checker
+from datetime import datetime  
 
 def log_queries(func):
     @functools.wraps(func)
@@ -20,7 +20,7 @@ def fetch_all_users(query):
     conn.close()
     return results
 
-# ✅ Test the function (optional, remove if checker runs this part)
+# I added this for testing
 if __name__ == "__main__":
     users = fetch_all_users(query="SELECT * FROM users")
     print(users)
