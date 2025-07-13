@@ -1,6 +1,6 @@
+import time
 import sqlite3
 import functools
-import time
 
 def with_db_connection(func):
     @functools.wraps(func)
@@ -34,3 +34,7 @@ def fetch_users_with_retry(conn):
     cursor = conn.cursor()
     cursor.execute("SELECT * FROM users")
     return cursor.fetchall()
+
+# ✅ Test it
+users = fetch_users_with_retry()
+print(users)

@@ -15,11 +15,12 @@ def with_db_connection(func):
 
 def cache_query(func):
     @functools.wraps(func)
-    def wrapper(conn, query):
+    def wrapper(conn, *args, **kwargs):
+        query = kwargs.get("query") or (args[1] if len(args) > 1 else "")
         if query in query_cache:
             print("Using cached result")
             return query_cache[query]
-        result = func(conn, query)
+        result = func(conn, *args, **kwargs)
         query_cache[query] = result
         return result
     return wrapper
@@ -30,3 +31,11 @@ def fetch_users_with_cache(conn, query):
     cursor = conn.cursor()
     cursor.execute(query)
     return cursor.fetchall()
+
+# ✅ Test it
+users = fetch_users_with_cache(query="SELECT * FROM users")
+print(users)
+
+# Run again to see the cache effect
+users_again = fetch_users_with_cache(query="SELECT * FROM users")
+print(users_again)
