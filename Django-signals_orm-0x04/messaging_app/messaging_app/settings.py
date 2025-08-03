@@ -1,8 +1,12 @@
 #!/usr/bin/env python3
-"""Django settings (partial) including basic caching configuration."""
+"""Django settings including basic caching configuration."""
 from pathlib import Path
 
 BASE_DIR = Path(__file__).resolve().parent.parent
+
+SECRET_KEY = "dummy-key-for-development"
+DEBUG = True
+ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     "django.contrib.admin",
@@ -23,16 +27,23 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
 ]
 
-CACHES = {
-    "default": {
-        "BACKEND": "django.core.cache.backends.locmem.LocMemCache",
-        "LOCATION": "unique-snowflake",
-    }
-}
+ROOT_URLCONF = "messaging_app.urls"  # adjust if your module path differs
 
-ROOT_URLCONF = "messaging_app.urls"
-SECRET_KEY = "dummy"
-DEBUG = True
+TEMPLATES = [
+    {
+        "BACKEND": "django.template.backends.django.DjangoTemplates",
+        "DIRS": [],
+        "APP_DIRS": True,
+        "OPTIONS": {"context_processors": [
+            "django.template.context_processors.debug",
+            "django.template.context_processors.request",
+            "django.contrib.auth.context_processors.auth",
+            "django.contrib.messages.context_processors.messages",
+        ],},
+    },
+]
+
+WSGI_APPLICATION = "messaging_app.wsgi.application"
 
 DATABASES = {
     "default": {
@@ -40,3 +51,19 @@ DATABASES = {
         "NAME": BASE_DIR / "db.sqlite3",
     }
 }
+
+# Basic caching configuration as required
+CACHES = {
+    "default": {
+        "BACKEND": "django.core.cache.backends.locmem.LocMemCache",
+        "LOCATION": "unique-snowflake",
+    }
+}
+
+# Internationalization & static (minimal)
+LANGUAGE_CODE = "en-us"
+TIME_ZONE = "UTC"
+USE_I18N = True
+USE_TZ = True
+STATIC_URL = "/static/"
+DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
