@@ -1,8 +1,7 @@
+#!/usr/bin/env python3
 from django.contrib import admin
-from .models import Message, Notification  # and MessageHistory if separate
+from .models import Message, Notification, MessageHistory
 
 admin.site.register(Message)
 admin.site.register(Notification)
-# If MessageHistory is separate model:
-# from .models import MessageHistory
-# admin.site.register(MessageHistory)
+admin.site.register(MessageHistory)

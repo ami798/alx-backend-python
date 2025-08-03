@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 from django.apps import AppConfig
 
 class MessagingConfig(AppConfig):
@@ -5,4 +6,4 @@ class MessagingConfig(AppConfig):
     name = "messaging"
 
     def ready(self):
-        import messaging.signals  # noqa: F401 to register signal handlers
+        import messaging.signals  # register signal handlers
